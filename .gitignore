@@ -2,3 +2,5 @@
 !.idea/icon.svg
 target/
 release.log
+release.log
+release.properties
