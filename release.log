@@ -29,10 +29,11 @@
 [INFO] Working directory: /Users/maikelei/Documents/java/Alpine
 [INFO] Executing: /bin/sh -c cd '/Users/maikelei/Documents/java/Alpine' && 'git' 'status' '--porcelain' '.'
 [INFO] Working directory: /Users/maikelei/Documents/java/Alpine
+[WARNING] Ignoring unrecognized line: ?? release.properties
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for alpine-parent 3.2.1-SNAPSHOT:
 [INFO] 
-[INFO] alpine-parent ...................................... FAILURE [  2.116 s]
+[INFO] alpine-parent ...................................... FAILURE [  2.066 s]
 [INFO] alpine-common ...................................... SKIPPED
 [INFO] alpine-model ....................................... SKIPPED
 [INFO] alpine-infra ....................................... SKIPPED
@@ -41,8 +42,8 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.897 s
-[INFO] Finished at: 2025-08-07T10:14:55+08:00
+[INFO] Total time:  2.813 s
+[INFO] Finished at: 2025-08-07T10:16:39+08:00
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-release-plugin:3.0.1:prepare (default-cli) on project alpine-parent: Cannot prepare the release because you have local modifications : 
 [ERROR] [release.log:modified]
