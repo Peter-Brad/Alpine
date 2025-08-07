@@ -74,7 +74,7 @@ public class UpgradeMetaProcessor implements Closeable {
         PreparedStatement statement = null;
         ResultSet results = null;
         try {
-            statement = connection.prepareStatement("SELECT \"UPGRADECLASS\" FROM \"INSTALLEDUPGRADES\" WHERE \"UPGRADECLASS\" = ?");
+            statement = connection.prepareStatement("select \"upgradeclass\" from \"installedupgrades\" where \"upgradeclass\" = ?");
             statement.setString(1, upgradeClass.getCanonicalName());
             results = statement.executeQuery();
             return results.next();
@@ -96,7 +96,7 @@ public class UpgradeMetaProcessor implements Closeable {
     public void installUpgrade(final Class<? extends UpgradeItem> upgradeClass, final long startTime, final long endTime) throws SQLException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("INSERT INTO \"INSTALLEDUPGRADES\" (\"UPGRADECLASS\", \"STARTTIME\", \"ENDTIME\") VALUES (?, ?, ?)");
+            statement = connection.prepareStatement("insert into \"installedupgrades\" (\"upgradeclass\", \"starttime\", \"endtime\") values (?, ?, ?)");
             statement.setString(1, upgradeClass.getCanonicalName());
             statement.setTimestamp(2, new Timestamp(startTime));
             statement.setTimestamp(3, new Timestamp(endTime));
@@ -119,7 +119,7 @@ public class UpgradeMetaProcessor implements Closeable {
         PreparedStatement statement = null;
         ResultSet results = null;
         try {
-            statement = connection.prepareStatement("SELECT \"VERSION\" FROM \"SCHEMAVERSION\"");
+            statement = connection.prepareStatement("select \"version\" from \"schemaversion\"");
             results = statement.executeQuery();
 
             if (results.next()) {
@@ -146,7 +146,7 @@ public class UpgradeMetaProcessor implements Closeable {
         PreparedStatement updateStatement = null;
         ResultSet results = null;
         try {
-            statement = connection.prepareStatement("SELECT \"VERSION\" FROM \"SCHEMAVERSION\"");
+            statement = connection.prepareStatement("select \"version\" from \"schemaversion\"");
             results = statement.executeQuery();
 
             if (results.next()) {
@@ -154,11 +154,11 @@ public class UpgradeMetaProcessor implements Closeable {
                 if (version == null || currentVersion.isNewerThan(version)) {
                     return;
                 }
-                updateStatement = connection.prepareStatement("UPDATE \"SCHEMAVERSION\" SET \"VERSION\" = ?");
+                updateStatement = connection.prepareStatement("update \"schemaversion\" set \"version\" = ?");
             } else {
                 // Does not exist. Populate schema table with current running version
                 version = new VersionComparator(Config.getInstance().getApplicationVersion());
-                updateStatement = connection.prepareStatement("INSERT INTO \"SCHEMAVERSION\" (\"VERSION\") VALUES (?)");
+                updateStatement = connection.prepareStatement("insert into \"schemaversion\" (\"version\") values (?)");
             }
 
             LOGGER.debug("Updating database schema to: " + version.toString());

@@ -763,17 +763,17 @@ public class AlpineQueryManager extends AbstractAlpineQueryManager {
 
     private Set<String> getEffectivePermissions(final ApiKey apiKey) {
         final Query<?> query = pm.newQuery(Query.SQL, /* language=SQL */ """
-                SELECT "PERMISSION"."NAME"
-                  FROM "APIKEY"
-                 INNER JOIN "APIKEYS_TEAMS"
-                    ON "APIKEYS_TEAMS"."APIKEY_ID" = "APIKEY"."ID"
-                 INNER JOIN "TEAM"
-                    ON "TEAM"."ID" = "APIKEYS_TEAMS"."TEAM_ID"
-                 INNER JOIN "TEAMS_PERMISSIONS"
-                    ON "TEAMS_PERMISSIONS"."TEAM_ID" = "TEAM"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "TEAMS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "APIKEY"."ID" = :apiKeyId
+                select "permission"."name"
+                  from "apikey"
+                 inner join "apikeys_teams"
+                    on "apikeys_teams"."apikey_id" = "apikey"."id"
+                 inner join "team"
+                    on "team"."id" = "apikeys_teams"."team_id"
+                 inner join "teams_permissions"
+                    on "teams_permissions"."team_id" = "team"."id"
+                 inner join "permission"
+                    on "permission"."id" = "teams_permissions"."permission_id"
+                 where "apikey"."id" = :apiKeyId
                 """);
         query.setNamedParameters(Map.of("apiKeyId", apiKey.getId()));
         return Set.copyOf(executeAndCloseResultList(query, String.class));
@@ -781,25 +781,25 @@ public class AlpineQueryManager extends AbstractAlpineQueryManager {
 
     private Set<String> getEffectivePermissions(final LdapUser ldapUser) {
         final Query<?> query = pm.newQuery(Query.SQL, /* language=SQL */ """
-                SELECT "PERMISSION"."NAME"
-                  FROM "LDAPUSER"
-                 INNER JOIN "LDAPUSERS_TEAMS"
-                    ON "LDAPUSERS_TEAMS"."LDAPUSER_ID" = "LDAPUSER"."ID"
-                 INNER JOIN "TEAM"
-                    ON "TEAM"."ID" = "LDAPUSERS_TEAMS"."TEAM_ID"
-                 INNER JOIN "TEAMS_PERMISSIONS"
-                    ON "TEAMS_PERMISSIONS"."TEAM_ID" = "TEAM"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "TEAMS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "LDAPUSER"."ID" = :ldapUserId
-                 UNION ALL
-                SELECT "PERMISSION"."NAME"
-                  FROM "LDAPUSER"
-                 INNER JOIN "LDAPUSERS_PERMISSIONS"
-                    ON "LDAPUSERS_PERMISSIONS"."LDAPUSER_ID" = "LDAPUSER"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "LDAPUSERS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "LDAPUSER"."ID" = :ldapUserId
+                select "permission"."name"
+                  from "ldapuser"
+                 inner join "ldapusers_teams"
+                    on "ldapusers_teams"."ldapuser_id" = "ldapuser"."id"
+                 inner join "team"
+                    on "team"."id" = "ldapusers_teams"."team_id"
+                 inner join "teams_permissions"
+                    on "teams_permissions"."team_id" = "team"."id"
+                 inner join "permission"
+                    on "permission"."id" = "teams_permissions"."permission_id"
+                 where "ldapuser"."id" = :ldapUserId
+                 union all
+                select "permission"."name"
+                  from "ldapuser"
+                 inner join "ldapusers_permissions"
+                    on "ldapusers_permissions"."ldapuser_id" = "ldapuser"."id"
+                 inner join "permission"
+                    on "permission"."id" = "ldapusers_permissions"."permission_id"
+                 where "ldapuser"."id" = :ldapUserId
                 """);
         query.setNamedParameters(Map.of("ldapUserId", ldapUser.getId()));
         return Set.copyOf(executeAndCloseResultList(query, String.class));
@@ -807,25 +807,25 @@ public class AlpineQueryManager extends AbstractAlpineQueryManager {
 
     private Set<String> getEffectivePermissions(final ManagedUser managedUser) {
         final Query<?> query = pm.newQuery(Query.SQL, /* language=SQL */ """
-                SELECT "PERMISSION"."NAME"
-                  FROM "MANAGEDUSER"
-                 INNER JOIN "MANAGEDUSERS_TEAMS"
-                    ON "MANAGEDUSERS_TEAMS"."MANAGEDUSER_ID" = "MANAGEDUSER"."ID"
-                 INNER JOIN "TEAM"
-                    ON "TEAM"."ID" = "MANAGEDUSERS_TEAMS"."TEAM_ID"
-                 INNER JOIN "TEAMS_PERMISSIONS"
-                    ON "TEAMS_PERMISSIONS"."TEAM_ID" = "TEAM"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "TEAMS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "MANAGEDUSER"."ID" = :managedUserId
-                 UNION ALL
-                SELECT "PERMISSION"."NAME"
-                  FROM "MANAGEDUSER"
-                 INNER JOIN "MANAGEDUSERS_PERMISSIONS"
-                    ON "MANAGEDUSERS_PERMISSIONS"."MANAGEDUSER_ID" = "MANAGEDUSER"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "MANAGEDUSERS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "MANAGEDUSER"."ID" = :managedUserId
+                select "permission"."name"
+                  from "manageduser"
+                 inner join "managedusers_teams"
+                    on "managedusers_teams"."manageduser_id" = "manageduser"."id"
+                 inner join "team"
+                    on "team"."id" = "managedusers_teams"."team_id"
+                 inner join "teams_permissions"
+                    on "teams_permissions"."team_id" = "team"."id"
+                 inner join "permission"
+                    on "permission"."id" = "teams_permissions"."permission_id"
+                 where "manageduser"."id" = :managedUserId
+                 union all
+                select "permission"."name"
+                  from "manageduser"
+                 inner join "managedusers_permissions"
+                    on "managedusers_permissions"."manageduser_id" = "manageduser"."id"
+                 inner join "permission"
+                    on "permission"."id" = "managedusers_permissions"."permission_id"
+                 where "manageduser"."id" = :managedUserId
                 """);
         query.setNamedParameters(Map.of("managedUserId", managedUser.getId()));
         return Set.copyOf(executeAndCloseResultList(query, String.class));
@@ -833,25 +833,25 @@ public class AlpineQueryManager extends AbstractAlpineQueryManager {
 
     private Set<String> getEffectivePermissions(final OidcUser oidcUser) {
         final Query<?> query = pm.newQuery(Query.SQL, /* language=SQL */ """
-                SELECT "PERMISSION"."NAME"
-                  FROM "OIDCUSER"
-                 INNER JOIN "OIDCUSERS_TEAMS"
-                    ON "OIDCUSERS_TEAMS"."OIDCUSERS_ID" = "OIDCUSER"."ID"
-                 INNER JOIN "TEAM"
-                    ON "TEAM"."ID" = "OIDCUSERS_TEAMS"."TEAM_ID"
-                 INNER JOIN "TEAMS_PERMISSIONS"
-                    ON "TEAMS_PERMISSIONS"."TEAM_ID" = "TEAM"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "TEAMS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "OIDCUSER"."ID" = :oidcUserId
-                 UNION ALL
-                SELECT "PERMISSION"."NAME"
-                  FROM "OIDCUSER"
-                 INNER JOIN "OIDCUSERS_PERMISSIONS"
-                    ON "OIDCUSERS_PERMISSIONS"."OIDCUSER_ID" = "OIDCUSER"."ID"
-                 INNER JOIN "PERMISSION"
-                    ON "PERMISSION"."ID" = "OIDCUSERS_PERMISSIONS"."PERMISSION_ID"
-                 WHERE "OIDCUSER"."ID" = :oidcUserId
+                select "permission"."name"
+                  from "oidcuser"
+                 inner join "oidcusers_teams"
+                    on "oidcusers_teams"."oidcusers_id" = "oidcuser"."id"
+                 inner join "team"
+                    on "team"."id" = "oidcusers_teams"."team_id"
+                 inner join "teams_permissions"
+                    on "teams_permissions"."team_id" = "team"."id"
+                 inner join "permission"
+                    on "permission"."id" = "teams_permissions"."permission_id"
+                 where "oidcuser"."id" = :oidcUserId
+                 union all
+                select "permission"."name"
+                  from "oidcuser"
+                 inner join "oidcusers_permissions"
+                    on "oidcusers_permissions"."oidcuser_id" = "oidcuser"."id"
+                 inner join "permission"
+                    on "permission"."id" = "oidcusers_permissions"."permission_id"
+                 where "oidcuser"."id" = :oidcUserId
                 """);
         query.setNamedParameters(Map.of("oidcUserId", oidcUser.getId()));
         return Set.copyOf(executeAndCloseResultList(query, String.class));
